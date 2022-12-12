@@ -1,9 +1,10 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+const { connection } = require("../database/config");
+const sequelize = connection;
+
 module.exports = (sequelize, DataTypes) => {
-  class campus extends Model {
+  class Campus extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,24 +12,28 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // associations with user
-      campus.hasMany(models.user, {
-        foreignKey: 'campusId',
-        as: 'users',
-        onDelete: 'CASCADE',
+      Campus.belongsTo(models.User, {
+        foreignKey: "userId",
       });
-      
     }
   }
-  campus.init({
-    name: DataTypes.STRING,
-    address: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    createdBy: DataTypes.INTEGER,
-    updatedBy: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'campus',
-  });
-  
+  Campus.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+      },
+      name: DataTypes.STRING,
+      address: DataTypes.STRING,
+      phone: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      createdBy: DataTypes.INTEGER,
+      updatedBy: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "Campus",
+    }
+  );
+  return Campus;
 };

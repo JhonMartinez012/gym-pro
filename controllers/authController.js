@@ -1,13 +1,13 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs");
 
-const User = require("../models/user");
-const Role = require("../models/role");
+const User = require("../models").User;
+const Role = require("../models").Role;
 
 const { generateJWT } = require("../helpers/generate-jwt");
 
 const register = async (req, res = response) => {
-  const { firstName, lastName, address, email, password } = req.body;
+  const { firstName, lastName, address, email, password, roleId } = req.body;
 
   try {
     // Usuario que creo el usuario
@@ -19,6 +19,7 @@ const register = async (req, res = response) => {
       address,
       email,
       password,
+      roleId,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -42,8 +43,10 @@ const register = async (req, res = response) => {
   }
 };
 
-const login = async (req, res = response) => {
+const login = async (req = request, res = response) => {
   const { email, password } = req.body;
+
+  // console.log(User);
 
   try {
     // VERIFICAR SI EL EMAIL EXISTE
@@ -51,13 +54,10 @@ const login = async (req, res = response) => {
       where: {
         email,
       },
-    },{
-      include:[
-        {
-         association: User.Role,
-        },
-      ]
+      include: [{ model: Role }],
     });
+
+    console.log("usuario encontrado", user);
 
     if (!user) {
       return res.status(400).json({
@@ -80,6 +80,14 @@ const login = async (req, res = response) => {
       });
     }
 
+    // Quitamos la contraseña del objeto
+    user.password = undefined;
+
+    // ASIGNAR EL ROLE
+    // const role = await Role.findByPk(user.roleId);
+    // user.dataValues.enchiquizado = "Nancy";
+    // console.log(user);
+
     // GENERAR EL JWT
     const token = await generateJWT(user.id);
 
@@ -99,6 +107,7 @@ const login = async (req, res = response) => {
 const me = async (req = request, res = response) => {
   // leer la base de datos
   const user = await User.findByPk(req.user.id, {
+
     attributes: {
       exclude: ["password"],
     },

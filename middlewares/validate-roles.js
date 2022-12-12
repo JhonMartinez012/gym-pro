@@ -6,12 +6,14 @@ const isAdminRole = (req = request, res = response, next) => {
       msg: "Se quiere verificar el rol sin validar el token primero",
     });
   }
+  
+  const { Role, firstName } = req.user;
+  const role = Role.name;
 
-  const { role, name } = req.user;
 
-  if (role !== "admin-role") {
+  if (role !== "super-admin") {
     return res.status(401).json({
-      msg: `${name} no es administrador - No puede hacer esto`,
+      msg: `${firstName} no es administrador - No puede hacer esto`,
     });
   }
 

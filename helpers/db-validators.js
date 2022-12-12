@@ -1,4 +1,5 @@
-const User = require("../models/user");
+const User = require("../models").User;
+const Role = require("../models").Role;
 
 const emailExists = async (email = "") => {
     // Verificar si el correo existe
@@ -25,5 +26,6 @@ const isRoleValid = async (role = "") => {
 
 module.exports = {
     emailExists,
-    userExistsById
+    userExistsById,
+    isRoleValid,
 };

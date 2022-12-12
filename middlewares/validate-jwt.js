@@ -1,12 +1,12 @@
 const { response, request } = require('express');
 const jwt = require('jsonwebtoken');
 
-const User = require("../models/user");
+const User = require("../models").User;
+const Role = require("../models").Role;
 
 
 const validateJWT = async (req = request  , res = response, next) => {
-    console.log(req.rawHeaders);
-    
+       
     const token = req.rawHeaders[1].split(' ')[1]; // obtiene el toquen de las cabeceras sin tener que enviarlo
     
     if(!token){
@@ -19,7 +19,9 @@ const validateJWT = async (req = request  , res = response, next) => {
         const { id } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
         // Obtener el usuario que corresponde al uid
         console.log(User);
-        const user = await User.findByPk(id);
+        const user = await User.findByPk(id, {
+            include: [{ model: Role }]
+        });
 
         if(!user){
             return res.status(401).json({
