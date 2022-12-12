@@ -46,8 +46,6 @@ const register = async (req, res = response) => {
 const login = async (req = request, res = response) => {
   const { email, password } = req.body;
 
-  // console.log(User);
-
   try {
     // VERIFICAR SI EL EMAIL EXISTE
     const user = await User.findOne({
@@ -82,11 +80,6 @@ const login = async (req = request, res = response) => {
 
     // Quitamos la contraseña del objeto
     user.password = undefined;
-
-    // ASIGNAR EL ROLE
-    // const role = await Role.findByPk(user.roleId);
-    // user.dataValues.enchiquizado = "Nancy";
-    // console.log(user);
 
     // GENERAR EL JWT
     const token = await generateJWT(user.id);

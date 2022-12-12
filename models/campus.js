@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
       Campus.belongsTo(models.User, {
         foreignKey: "userId",
       });
+
+      Campus.belongsTo(models.principalCampus, {
+        foreignKey: "id",
+        target_key: "gymId",
+      });
+
     }
   }
   Campus.init(

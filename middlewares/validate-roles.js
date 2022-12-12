@@ -1,5 +1,7 @@
 const { request, response } = require("express");
 
+
+// Funcion para saber si el usuario es administrador
 const isAdminRole = (req = request, res = response, next) => {
   if (!req.user) {
     return res.status(500).json({
@@ -20,6 +22,7 @@ const isAdminRole = (req = request, res = response, next) => {
   next();
 };
 
+// Funcion para saber si el usuario tiene alguno de los roles enviados
 const hasRole = (...roles) => {
   return (req = request, res = response, next) => {
     if (!req.user) {
