@@ -4,11 +4,14 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const process = require('process');
+// const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+// const config = require(__dirname + '/../config/config.json')[env];
+const config = require(path.resolve(__dirname, 'config','config.json'))[env];
 const db = {};
+
+console.log(config);
 
 let sequelize;
 if (config.use_env_variable) {
@@ -18,13 +21,14 @@ if (config.use_env_variable) {
 }
 
 fs
-  .readdirSync(__dirname)
+  .readdirSync(path.resolve( __dirname,'models'))
   .filter(file => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
   .forEach(file => {
+    console.log(file);
     if (file !== 'server.js') {
-      const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+      const model = require(path.join(__dirname,'models', file))(sequelize, Sequelize.DataTypes);
       db[model.name] = model;
     }
   });
@@ -35,7 +39,21 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+const dbConnection = async () => {
+  try {
+    await sequelize.authenticate();
+
+    console.log("Database online");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error al conectar ", error);
+  }
+};
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+module.exports = {
+  ...db,
+  dbConnection,
+};

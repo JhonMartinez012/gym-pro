@@ -1,9 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
 
-const { connection } = require("../database/config");
+// const { connection } = require("../database/config");
 // const User = require("./user");
-const sequelize = connection;
+// const sequelize = connection;
 
 module.exports = (sequelize, DataTypes) => {
   class Role extends Model {

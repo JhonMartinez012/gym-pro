@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
-const { connection } = require("../database/config");
-const sequelize = connection;
+// const { connection } = require("../database/config");
+// const sequelize = connection;
 
 module.exports = (sequelize, DataTypes) => {
   class Campus extends Model {

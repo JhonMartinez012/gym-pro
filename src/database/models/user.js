@@ -1,8 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
 
-const { connection } = require("../database/config");
-const sequelize = connection;
+// const { connection } = require("../database/config");
+// const sequelize = connection;
 // const Role = require("./role");
 // const sequelize = connection;
 

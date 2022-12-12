@@ -1,8 +1,8 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs");
 
-const User = require("../models").User;
-const Role = require("../models").Role;
+const User = require("../database").User;
+const Role = require("../database").Role;
 
 const { generateJWT } = require("../helpers/generate-jwt");
 

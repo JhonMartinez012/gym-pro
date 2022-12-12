@@ -1,7 +1,7 @@
 const { response, request } = require("express");
 
-const User = require("../models").User;
-const Role = require("../models").Role;
+const User = require("../database/models/user");
+const Role = require("../database/models/role");
 
 const usersGet = async (req = request, res = response) => {
   const users = await User.findAll({

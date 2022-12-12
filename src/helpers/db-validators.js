@@ -1,5 +1,5 @@
-const User = require("../models").User;
-const Role = require("../models").Role;
+const User = require("../database/models/user");
+const Role = require("../database/models/role");
 
 const emailExists = async (email = "") => {
     // Verificar si el correo existe

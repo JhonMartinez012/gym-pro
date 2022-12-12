@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { dbConnection } = require("../database/config");
+const { dbConnection } = require("./database");
 
 class Server {
   constructor() {
@@ -42,8 +42,8 @@ class Server {
 
   // funcion para definir las rutas de la app
   routes() {
-    this.app.use(this.userPath, require("../routes/user"));
-    this.app.use(this.authPath, require("../routes/auth"));
+    this.app.use(this.userPath, require("./routes/user"));
+    this.app.use(this.authPath, require("./routes/auth"));
   }
 
   // funcion para saber el puerto en el que esta corriendo el servidor
